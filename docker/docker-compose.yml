@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # MLflow Tracking Server
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.9.0
+    container_name: llm-finetuner-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+      - ./mlflow-artifacts:/mlflow/artifacts
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow/mlruns/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      --port 5000
+    networks:
+      - llm-network
+
+  # Training Service
+  training:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.training
+    container_name: llm-finetuner-training
+    runtime: nvidia
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - HF_HOME=/app/cache/huggingface
+    volumes:
+      - ../data:/app/data
+      - ../models:/app/models
+      - ../logs:/app/logs
+      - ../cache:/app/cache
+      - ../configs:/app/configs
+    depends_on:
+      - mlflow
+    networks:
+      - llm-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Inference Serving
+  serving:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.serving
+    container_name: llm-finetuner-serving
+    runtime: nvidia
+    ports:
+      - "8000:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - ../models:/app/models
+    networks:
+      - llm-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  llm-network:
+    driver: bridge
+
+volumes:
+  mlflow-data:
+  model-data:

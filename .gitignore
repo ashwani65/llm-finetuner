@@ -1,0 +1,145 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# MLflow
+mlruns/
+mlflow-artifacts/
+mlartifacts/
+
+# Weights & Biases
+wandb/
+
+# Models & Checkpoints
+models/*
+!models/.gitkeep
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+adapter_model.bin
+adapter_config.json
+
+# Data
+data/raw/*
+data/processed/*
+!data/.gitkeep
+!data/README.md
+*.csv
+*.json
+!configs/*.json
+*.parquet
+*.arrow
+
+# Cache
+cache/
+.cache/
+__pycache__/
+*.pyc
+
+# HuggingFace Cache
+.huggingface/
+transformers_cache/
+datasets_cache/
+
+# Logs
+logs/
+*.log
+output/
+results/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Build artifacts
+*.o
+*.a
+*.lib
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker
+.dockerignore
+
+# Cloud credentials
+credentials.json
+service-account.json
+*.pem
+*.key
+
+# Evaluation results
+evaluation_results.json
+benchmark_results/
+
+# Large files (use Git LFS for these)
+*.h5
+*.hdf5
+*.pkl
+*.pickle

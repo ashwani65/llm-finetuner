@@ -1,0 +1,50 @@
+# Serving Dockerfile for LLM Inference
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic link for python
+RUN ln -s /usr/bin/python3.11 /usr/bin/python
+
+# Upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
+
+# Install serving dependencies (lightweight)
+RUN pip install --no-cache-dir \
+    torch>=2.1.0 \
+    transformers>=4.36.0 \
+    vllm>=0.2.0 \
+    fastapi>=0.104.0 \
+    uvicorn>=0.24.0 \
+    pydantic>=2.5.0 \
+    accelerate>=0.25.0
+
+# Copy only serving code
+COPY src/serving/ /app/src/serving/
+COPY src/utils/ /app/src/utils/
+COPY src/__init__.py /app/src/
+
+# Create model directory
+RUN mkdir -p /app/models
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Expose serving port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Run vLLM server
+CMD ["python", "-m", "src.serving.vllm_server", "--model", "/app/models/final", "--port", "8000"]

@@ -1,0 +1,52 @@
+# Training Dockerfile for LLM Fine-tuning
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    python3-dev \
+    git \
+    wget \
+    curl \
+    vim \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic link for python
+RUN ln -s /usr/bin/python3.11 /usr/bin/python
+
+# Upgrade pip
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project files
+COPY src/ /app/src/
+COPY scripts/ /app/scripts/
+COPY configs/ /app/configs/
+
+# Create necessary directories
+RUN mkdir -p /app/data /app/models /app/logs /app/cache
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV HF_HOME=/app/cache/huggingface
+ENV TORCH_HOME=/app/cache/torch
+
+# Set up MLflow
+ENV MLFLOW_TRACKING_URI=http://localhost:5000
+
+# Expose MLflow port
+EXPOSE 5000
+
+# Default command
+CMD ["/bin/bash"]
