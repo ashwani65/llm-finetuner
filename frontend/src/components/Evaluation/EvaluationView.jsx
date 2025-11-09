@@ -67,12 +67,12 @@ export default function EvaluationView() {
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">Recent Evaluations</h3>
         <div className="space-y-4">
-          {evaluations?.data?.map((eval) => (
-            <div key={eval.id} className="border border-gray-200 rounded-lg p-4">
+          {evaluations?.data?.map((evaluation) => (
+            <div key={evaluation.id} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h4 className="font-medium">{eval.model_name}</h4>
-                  <p className="text-sm text-gray-500">{eval.timestamp}</p>
+                  <h4 className="font-medium">{evaluation.model_name}</h4>
+                  <p className="text-sm text-gray-500">{evaluation.timestamp}</p>
                 </div>
                 <CheckCircle className="w-5 h-5 text-green-600" />
               </div>
@@ -80,23 +80,23 @@ export default function EvaluationView() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <MetricCard
                   label="BLEU Score"
-                  value={eval.metrics.bleu.toFixed(3)}
-                  trend={eval.metrics.bleu_trend}
+                  value={evaluation.metrics.bleu.toFixed(3)}
+                  trend={evaluation.metrics.bleu_trend}
                 />
                 <MetricCard
                   label="Exact Match"
-                  value={`${(eval.metrics.exact_match * 100).toFixed(1)}%`}
-                  trend={eval.metrics.em_trend}
+                  value={`${(evaluation.metrics.exact_match * 100).toFixed(1)}%`}
+                  trend={evaluation.metrics.em_trend}
                 />
                 <MetricCard
                   label="ROUGE-L"
-                  value={eval.metrics.rouge_l.toFixed(3)}
-                  trend={eval.metrics.rouge_trend}
+                  value={evaluation.metrics.rouge_l.toFixed(3)}
+                  trend={evaluation.metrics.rouge_trend}
                 />
                 <MetricCard
                   label="Perplexity"
-                  value={eval.metrics.perplexity.toFixed(2)}
-                  trend={eval.metrics.perp_trend}
+                  value={evaluation.metrics.perplexity.toFixed(2)}
+                  trend={evaluation.metrics.perp_trend}
                   inverse
                 />
               </div>

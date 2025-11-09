@@ -22,6 +22,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+node_modules/
 
 # Virtual Environment
 venv/
@@ -143,3 +144,4 @@ benchmark_results/
 *.hdf5
 *.pkl
 *.pickle
+claude.md
