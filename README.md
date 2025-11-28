@@ -66,7 +66,7 @@ This project implements an end-to-end ML pipeline for fine-tuning open-source LL
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/llm-finetuner.git
+git clone https://github.com/ashwani65/llm-finetuner.git
 cd llm-finetuner
 
 # Create virtual environment
@@ -126,6 +126,30 @@ curl -X POST http://localhost:8000/generate \
     }'
 ```
 
+### Web Interface
+
+Start the complete stack with frontend and backend:
+
+```bash
+# Terminal 1: Start Production API
+./start_api.sh
+# API: http://localhost:8000
+# Docs: http://localhost:8000/docs
+
+# Terminal 2: Start Frontend
+cd frontend
+npm run dev
+# UI: http://localhost:3000
+```
+
+**Web Interface Features:**
+- 📊 Real-time training monitoring
+- 📁 Dataset upload and management
+- ⚙️ Interactive training configuration
+- 📈 Evaluation results visualization
+- 🚀 Model deployment controls
+- 💻 GPU monitoring
+
 ---
 
 ## Project Structure
@@ -145,8 +169,9 @@ llm-finetuner/
 │   │   ├── metrics.py
 │   │   ├── benchmarks.py
 │   │   └── comparison.py
-│   ├── serving/           # Inference server
+│   ├── serving/           # Inference & API server
 │   │   ├── vllm_server.py
+│   │   ├── production_api.py  # Production FastAPI backend
 │   │   └── api.py
 │   ├── monitoring/        # Experiment tracking
 │   │   ├── mlflow_tracking.py
@@ -154,7 +179,9 @@ llm-finetuner/
 │   └── utils/             # Utilities
 │       ├── gpu_utils.py
 │       ├── model_utils.py
-│       └── cost_calculator.py
+│       ├── cost_calculator.py
+│       ├── database.py        # SQLite ORM models
+│       └── job_manager.py     # Async training jobs
 ├── configs/               # Configuration files
 │   ├── base_config.yaml
 │   ├── llama_sql_config.yaml
@@ -168,11 +195,18 @@ llm-finetuner/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_training_experiments.ipynb
 │   └── 03_evaluation_analysis.ipynb
+├── frontend/              # React web interface
+│   ├── src/
+│   │   ├── components/    # UI components
+│   │   ├── services/      # API integration
+│   │   └── App.jsx
+│   └── package.json
 ├── tests/                 # Unit tests
 ├── docker/                # Docker configurations
 │   ├── Dockerfile.training
 │   ├── Dockerfile.serving
 │   └── docker-compose.yml
+├── start_api.sh           # API startup script
 └── requirements.txt
 ```
 
@@ -441,7 +475,7 @@ If you use this project in your research or production, please cite:
   title = {LLM Fine-tuner: Production-Ready LoRA Fine-tuning Pipeline},
   year = {2024},
   publisher = {GitHub},
-  url = {https://github.com/your-username/llm-finetuner}
+  url = {https://github.com/ashwani65/llm-finetuner}
 }
 ```
 
@@ -460,8 +494,8 @@ If you use this project in your research or production, please cite:
 
 **Ashwani Singh**
 - GitHub: [@ashwani65](https://github.com/ashwani65)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+- LinkedIn: [Ashwani Singh](https://www.linkedin.com/in/ashwani-singh-5b1868165/)
+- Email: ashwani.11803318@gmail.com
 
 ---
 

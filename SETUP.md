@@ -125,10 +125,48 @@ Frontend will be available at: http://localhost:3000
 ```bash
 # In another terminal (with venv activated)
 cd ..
-python -m src.serving.dashboard_api
+
+# Option 1: Use startup script (recommended)
+./start_api.sh
+
+# Option 2: Run directly
+python -m src.serving.production_api
 ```
 
 Backend API will be available at: http://localhost:8000
+
+**API Documentation**: http://localhost:8000/docs (Swagger UI)
+
+## Production API Features
+
+The production API (`src/serving/production_api.py`) connects the frontend to the real training pipeline:
+
+### Features
+- **Real Database**: SQLite database for tracking jobs, datasets, models, and evaluations
+- **Async Training**: Background training using threading (non-blocking API)
+- **File Upload**: Upload and manage datasets through the API
+- **Job Management**: Create, start, stop, and monitor training jobs
+- **Model Registry**: Track and manage trained models
+- **Evaluation**: Run evaluations and store results
+- **GPU Monitoring**: Check GPU status and utilization
+
+### Key Endpoints
+- `POST /datasets/upload` - Upload a new dataset
+- `POST /training/start` - Start a training job
+- `GET /training/{job_id}/status` - Get training status
+- `POST /evaluation/run/{model_id}` - Run evaluation on a model
+- `GET /models` - List all trained models
+- `GET /system/gpu` - Check GPU status
+
+### Database Schema
+The API uses SQLite with the following tables:
+- `datasets` - Uploaded datasets
+- `training_jobs` - Training job history and status
+- `models` - Trained model registry
+- `evaluations` - Evaluation results
+- `deployments` - Model deployment tracking
+
+Database location: `data/llm_finetuner.db`
 
 ## Development Workflow
 
